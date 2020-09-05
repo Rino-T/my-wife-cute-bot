@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  AWS
+
+  Sample SAM Template for AWS
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  LambdaEnv:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - stg
+      - prod
+  TwitterConsumerKey:
+    Type: String
+  TwitterConsumerSecretKey:
+    Type: String
+  TwitterAccessToken:
+    Type: String
+  TwitterAccessTokenSecret:
+    Type: String
+
+Resources:
+  MyWifeCuteFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.8
+      CodeUri: my_wife_cute_function
+      Handler: my_wife_cute/app.lambda_handler
+      FunctionName: !Sub my-wife-cute-function-${LambdaEnv}
+      Environment:
+        Variables:
+          ENV: !Ref LambdaEnv
+          TWITTER_CONSUMER_KEY: !Ref TwitterConsumerKey
+          TWITTER_CONSUMER_SECRET_KEY: !Ref TwitterConsumerSecretKey
+          TWITTER_ACCESS_TOKEN: !Ref TwitterAccessToken
+          TWITTER_ACCESS_TOKEN_SECRET: !Ref TwitterAccessTokenSecret
+      Events:
+        MyWifeCuteScheduledEvent:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 10 * * ? *)
+            Name: !Sub my-wife-cute-bot-schedule-${LambdaEnv}
+            Description: Tweet my wife is cute today
+            Enabled: True
