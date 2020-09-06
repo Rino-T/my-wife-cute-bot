@@ -1,3 +1,5 @@
+import datetime
+
 import tweepy
 import os
 
@@ -13,4 +15,5 @@ twitter = tweepy.API(auth)
 
 
 def lambda_handler(event, context):
-    twitter.update_status("今日も妻が可愛い（いないけど）")
+    today = datetime.date.today()
+    twitter.update_status(f"今日({today})も妻が可愛い（いないけど）")

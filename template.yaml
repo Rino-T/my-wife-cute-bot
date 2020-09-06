@@ -46,7 +46,7 @@ Resources:
         MyWifeCuteScheduledEvent:
           Type: Schedule
           Properties:
-            Schedule: cron(0 10 * * ? *)
+            Schedule: cron(0 1 * * ? *)
             Name: !Sub my-wife-cute-bot-schedule-${LambdaEnv}
             Description: Tweet my wife is cute today
             Enabled: True
